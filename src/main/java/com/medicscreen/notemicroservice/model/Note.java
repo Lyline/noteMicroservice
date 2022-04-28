@@ -1,10 +1,19 @@
 package com.medicscreen.notemicroservice.model;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class Note {
 
-  private final Integer id;
-  private final Integer patientId;
-  private final String noteContent;
+  private Integer id;
+
+  @NotNull(message = "Patient Id must be mandatory")
+  private Integer patientId;
+
+  @NotEmpty(message = "Note content must be mandatory")
+  private String noteContent;
+
+  public Note(){}
 
   public Note(NoteBuilder builder){
     this.id= builder.id;
@@ -48,5 +57,4 @@ public class Note {
       return new Note(this);
     }
   }
-
 }

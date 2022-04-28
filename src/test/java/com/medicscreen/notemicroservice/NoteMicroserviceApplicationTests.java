@@ -10,4 +10,9 @@ class NoteMicroserviceApplicationTests {
   void contextLoads() {
   }
 
+  @Test
+  void main(){
+    NoteMicroserviceApplication.main(new String[]{});
+  }
+
 }

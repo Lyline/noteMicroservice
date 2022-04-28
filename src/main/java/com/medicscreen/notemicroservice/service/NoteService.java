@@ -3,10 +3,12 @@ package com.medicscreen.notemicroservice.service;
 import com.medicscreen.notemicroservice.model.Note;
 import com.medicscreen.notemicroservice.model.Note.NoteBuilder;
 import com.medicscreen.notemicroservice.repository.NoteRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class NoteService {
 
   private final NoteRepository repository;
@@ -24,7 +26,8 @@ public class NoteService {
 
     if (note.isPresent()){
       return note.get();
-    }return null;
+    }
+    return null;
   }
 
   public Note addNote(Note noteToSave) {
@@ -49,6 +52,7 @@ public class NoteService {
     if (repository.existsById(id)){
       repository.deleteById(id);
       return true;
-    }return false;
+    }
+    return false;
   }
 }
