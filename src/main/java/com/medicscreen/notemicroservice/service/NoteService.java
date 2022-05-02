@@ -17,8 +17,8 @@ public class NoteService {
     this.repository = repository;
   }
 
-  public List<Note> getAllNotes() {
-    return repository.findAll();
+  public List<Note> getAllNotesByPatient(Integer patientId) {
+    return repository.findAllByPatientIdOrderByIdDesc(patientId);
   }
 
   public Note getNoteById(String id) {

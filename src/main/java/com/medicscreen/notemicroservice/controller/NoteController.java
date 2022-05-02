@@ -20,19 +20,18 @@ public class NoteController {
     this.service = service;
   }
 
-
   @GetMapping("")
   public ResponseEntity<String> getWelcome(){
     return new ResponseEntity<>("Welcome to Note API", HttpStatus.OK);
   }
 
-  @GetMapping("/notes")
-  public ResponseEntity<List<Note>> getAllNotes(){
-    List<Note> notes=service.getAllNotes();
-    if (notes.isEmpty()){
-      return new ResponseEntity<>(notes,HttpStatus.NO_CONTENT);
-    }
-    return new ResponseEntity<>(notes, HttpStatus.OK);
+  @GetMapping("/patient_notes/{id}")
+  public ResponseEntity<List<Note>> getAllNotesByPatient(@PathVariable Integer id){
+    List<Note> notes= service.getAllNotesByPatient(id);
+
+    if (!notes.isEmpty()) {
+      return new ResponseEntity<>(notes,HttpStatus.OK);
+    }return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @GetMapping("/notes/{id}")

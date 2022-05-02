@@ -39,32 +39,6 @@ public class NoteServiceTest {
       .build();
 
   @Test
-  void givenTwoNotesWhenGetAllNotesThenReturnListOfNotes() {
-    //Given
-    when(repository.findAll()).thenReturn(List.of(note1, note2));
-
-    //When
-    List<Note>actual= classUnderTest.getAllNotes();
-
-    //Then
-    assertThat(actual.size()).isEqualTo(2);
-    verify(repository,times(1)).findAll();
-  }
-
-  @Test
-  void givenNoNoteWhenGetAllNotesThenReturnEmptyList() {
-    //Given
-    when(repository.findAll()).thenReturn(Collections.emptyList());
-
-    //When
-    List<Note> actual= classUnderTest.getAllNotes();
-
-    //Then
-    assertThat(actual.size()).isEqualTo(0);
-    verify(repository,times(1)).findAll();
-  }
-
-  /*@Test
   void givenAPatientWithTwoNotesWhenGetAllNotesByPatientThenReturnListOfPatientNotes() {
     //Given
     Note note= new NoteBuilder()
@@ -73,11 +47,28 @@ public class NoteServiceTest {
         .noteContent("second note of Doe")
         .build();
 
-    //when(repository.findAllBy)
+    when(repository.findAllByPatientIdOrderByIdDesc(anyInt())).thenReturn(List.of(note1,note));
 
     //When
+    List<Note>actual= classUnderTest.getAllNotesByPatient(2);
+
     //Then
-  }*/
+    assertThat(actual.size()).isEqualTo(2);
+    assertThat(actual.get(0)).isEqualTo(note1);
+    assertThat(actual.get(1)).isEqualTo(note);
+  }
+
+  @Test
+  void givenAPatientWithoutNoteWhenGetAllNotesByPatientThenReturnAnEmptyList() {
+    //Given
+    when(repository.findAllByPatientIdOrderByIdDesc(anyInt())).thenReturn(Collections.emptyList());
+
+    //When
+    List<Note>actual= classUnderTest.getAllNotesByPatient(2);
+
+    //Then
+    assertTrue(actual.isEmpty());
+  }
 
   @Test
   void givenANoteExistingWhenGetNoteByIdThenReturnNote() {
@@ -177,6 +168,7 @@ public class NoteServiceTest {
     assertFalse(actual);
     verify(repository, times(0)).deleteById("1");
   }
+
   private void noteAssertionVerification(Note actual) {
     assertThat(actual.getId()).isEqualTo("1");
     assertThat(actual.getPatientId()).isEqualTo(2);

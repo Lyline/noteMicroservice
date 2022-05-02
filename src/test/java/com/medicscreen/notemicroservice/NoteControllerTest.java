@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -49,33 +50,38 @@ public class NoteControllerTest {
   }
 
   @Test
-  void givenTwoNotesWhenGetAllNotesThenReturnListOfNotesWithStatus200() throws Exception {
+  void givenPatientWithTwoNotesThenGetAllNotesByPatientThenReturnListOfNotesWithStatus200() throws Exception {
     //Given
-    when(service.getAllNotes()).thenReturn(List.of(note1,note2));
+    Note note= new NoteBuilder()
+        .id("4")
+        .patientId(2)
+        .noteContent("Second New Note")
+        .build();
 
-    //When
-    mockMvc.perform(get("/noteAPI/notes"))
+    when(service.getAllNotesByPatient(anyInt())).thenReturn(List.of(note1,note));
+
+    //When:
+    mockMvc.perform(get("/noteAPI/patient_notes/2"))
         .andExpect(status().isOk())
         .andExpect(content().json(
             "[{\"id\":\"1\"," +
-            "\"patientId\":2," +
-            "\"noteContent\":\"New Note\"}," +
+                "\"patientId\":2," +
+                "\"noteContent\":\"New Note\"}," +
 
-            "{\"id\":\"2\"," +
-            "\"patientId\":3," +
-            "\"noteContent\":\"second Note\"}]"
+                "{\"id\":\"4\"," +
+                "\"patientId\":2," +
+                "\"noteContent\":\"Second New Note\"}]"
         ));
   }
 
   @Test
-  void givenNoNoteWhenGetAllNotesThenReturnEmptyListWithStatus204() throws Exception {
+  void givenPatientWithoutNoteThenGetAllNotesByPatientThenReturnStatus204() throws Exception {
     //Given
-    when(service.getAllNotes()).thenReturn(Collections.emptyList());
+    when(service.getAllNotesByPatient(anyInt())).thenReturn(Collections.emptyList());
 
-    //When
-    mockMvc.perform(get("/noteAPI/notes"))
-        .andExpect(status().isNoContent())
-        .andExpect(content().json("[]"));
+    //When:
+    mockMvc.perform(get("/noteAPI/patient_notes/2"))
+        .andExpect(status().isNoContent());
   }
 
   @Test
