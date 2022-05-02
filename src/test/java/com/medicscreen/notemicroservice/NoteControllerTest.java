@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -30,13 +29,13 @@ public class NoteControllerTest {
   private NoteService service;
 
   private final Note note1= new NoteBuilder()
-      .id(1)
+      .id("1")
       .patientId(2)
       .noteContent("New Note")
       .build();
 
   private final Note note2= new NoteBuilder()
-      .id(2)
+      .id("2")
       .patientId(3)
       .noteContent("second Note")
       .build();
@@ -58,11 +57,11 @@ public class NoteControllerTest {
     mockMvc.perform(get("/noteAPI/notes"))
         .andExpect(status().isOk())
         .andExpect(content().json(
-            "[{\"id\":1," +
+            "[{\"id\":\"1\"," +
             "\"patientId\":2," +
             "\"noteContent\":\"New Note\"}," +
 
-            "{\"id\":2," +
+            "{\"id\":\"2\"," +
             "\"patientId\":3," +
             "\"noteContent\":\"second Note\"}]"
         ));
@@ -82,13 +81,13 @@ public class NoteControllerTest {
   @Test
   void givenANoteExistingWhenGetNoteByIdThenReturnNoteWithStatus200() throws Exception {
     //Given
-    when(service.getNoteById(anyInt())).thenReturn(note1);
+    when(service.getNoteById(any())).thenReturn(note1);
 
     //When
     mockMvc.perform(get("/noteAPI/notes/1"))
         .andExpect(status().isOk())
         .andExpect(content().json(
-            "{\"id\":1," +
+            "{\"id\":\"1\"," +
                 "\"patientId\":2," +
                 "\"noteContent\":\"New Note\"}"
         ));
@@ -97,7 +96,7 @@ public class NoteControllerTest {
   @Test
   void givenNoteNotExistingWhenGetNoteByIdThenReturnStatus204() throws Exception {
     //Given
-    when(service.getNoteById(anyInt())).thenReturn(null);
+    when(service.getNoteById(any())).thenReturn(null);
 
     //When
     mockMvc.perform(get("/noteAPI/notes/1"))
@@ -119,7 +118,7 @@ public class NoteControllerTest {
         
         .andExpect(status().isCreated())
         .andExpect(content().json(
-            "{\"id\":1," +
+            "{\"id\":\"1\"," +
                 "\"patientId\":2," +
                 "\"noteContent\":\"New Note\"}"
         ));
@@ -147,23 +146,23 @@ public class NoteControllerTest {
   void givenANoteExistingWithValidUpdateWhenUpdateNoteThenReturnNoteUpdatedWithStatus201() throws Exception {
     //Given
     Note noteUpdated= new NoteBuilder()
-        .id(1)
-        .patientId(3)
+        .id(String.valueOf(1))
+        .patientId(2)
         .noteContent("Content updated")
         .build();
 
-    when(service.updateNote(anyInt(),any())).thenReturn(noteUpdated);
+    when(service.updateNote(any(),any())).thenReturn(noteUpdated);
 
     //When
     mockMvc.perform(put("/noteAPI/notes/1")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"patientId\":3," +
+        .content("{\"patientId\":2," +
             "\"noteContent\":\"Content updated\"}"))
 
         .andExpect(status().isCreated())
         .andExpect(content().json(
-            "{\"id\":1," +
-            "\"patientId\":3," +
+            "{\"id\":\"1\"," +
+            "\"patientId\":2," +
             "\"noteContent\":\"Content updated\"}"));
   }
 
@@ -185,12 +184,12 @@ public class NoteControllerTest {
   @Test
   void givenANoteNotExistingWithNoteValidUpdateWhenUpdateNoteThenReturnStatus204() throws Exception {
     //Given
-    when(service.updateNote(anyInt(),any())).thenReturn(null);
+    when(service.updateNote(any(),any())).thenReturn(null);
 
     //When
     mockMvc.perform(put("/noteAPI/notes/3")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"patientId\":3," +
+        .content("{\"patientId\":4," +
             "\"noteContent\":\"New Note\"}"))
         .andExpect(status().isNoContent());
   }
@@ -198,7 +197,7 @@ public class NoteControllerTest {
   @Test
   void givenANoteExistingWhenDeleteNoteByIdThenNoteDeletedWithStatus200() throws Exception {
     //Given
-    when(service.deleteById(anyInt())).thenReturn(true);
+    when(service.deleteById(any())).thenReturn(true);
 
     //When
     mockMvc.perform(delete("/noteAPI/notes/1"))
@@ -208,7 +207,7 @@ public class NoteControllerTest {
   @Test
   void givenANoteNotExistingWhenDeleteNoteByIdThenNoteDeletedWithStatus204() throws Exception {
     //Given
-    when(service.deleteById(anyInt())).thenReturn(false);
+    when(service.deleteById(any())).thenReturn(false);
 
     //When
     mockMvc.perform(delete("/noteAPI/notes/1"))

@@ -36,7 +36,7 @@ public class NoteController {
   }
 
   @GetMapping("/notes/{id}")
-  public ResponseEntity<Note> getNoteById(@PathVariable int id){
+  public ResponseEntity<Note> getNoteById(@PathVariable String id){
     Note note= service.getNoteById(id);
 
     if (Objects.isNull(note)){
@@ -52,7 +52,7 @@ public class NoteController {
   }
 
   @PutMapping("/notes/{id}")
-  public ResponseEntity<Note> updateNote(@PathVariable int id,
+  public ResponseEntity<Note> updateNote(@PathVariable String id,
                                          @Valid @RequestBody Note note){
     Note noteUpdated= service.updateNote(id,note);
 
@@ -63,7 +63,7 @@ public class NoteController {
   }
 
   @DeleteMapping("/notes/{id}")
-  public ResponseEntity deleteNoteById(@PathVariable int id){
+  public ResponseEntity deleteNoteById(@PathVariable String id){
     boolean noteIsDeleted= service.deleteById(id);
 
     if (noteIsDeleted){

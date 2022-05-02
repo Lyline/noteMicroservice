@@ -21,7 +21,7 @@ public class NoteService {
     return repository.findAll();
   }
 
-  public Note getNoteById(int id) {
+  public Note getNoteById(String id) {
     Optional<Note> note= repository.findById(id);
 
     if (note.isPresent()){
@@ -34,7 +34,7 @@ public class NoteService {
     return repository.save(noteToSave);
   }
 
-  public Note updateNote(int id, Note noteToUpdate){
+  public Note updateNote(String id, Note noteToUpdate){
     if (repository.existsById(id)){
 
       Note note= new NoteBuilder()
@@ -48,7 +48,7 @@ public class NoteService {
     return null;
   }
 
-  public boolean deleteById(int id) {
+  public boolean deleteById(String id) {
     if (repository.existsById(id)){
       repository.deleteById(id);
       return true;

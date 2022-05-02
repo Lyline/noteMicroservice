@@ -1,11 +1,15 @@
 package com.medicscreen.notemicroservice.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class Note {
 
-  private Integer id;
+  @Id
+  private String id;
 
   @NotNull(message = "Patient Id must be mandatory")
   private Integer patientId;
@@ -17,11 +21,11 @@ public class Note {
 
   public Note(NoteBuilder builder){
     this.id= builder.id;
-    this.patientId= builder.patientId;
+    this.patientId = builder.patientId;
     this.noteContent= builder.noteContent;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -34,17 +38,17 @@ public class Note {
   }
 
   public static class NoteBuilder{
-    private Integer id;
+    private String id;
     private Integer patientId;
     private String noteContent;
 
-    public NoteBuilder id(Integer id){
+    public NoteBuilder id(String id){
       this.id=id;
       return this;
     }
 
     public NoteBuilder patientId(Integer patientId){
-      this.patientId=patientId;
+      this.patientId =patientId;
       return this;
     }
 

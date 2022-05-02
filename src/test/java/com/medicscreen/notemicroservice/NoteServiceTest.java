@@ -13,7 +13,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 public class NoteServiceTest {
@@ -22,20 +21,20 @@ public class NoteServiceTest {
   private final NoteService classUnderTest= new NoteService(repository);
 
   private final Note note1= new NoteBuilder()
-      .id(1)
+      .id("1")
       .patientId(2)
       .noteContent("new note")
       .build();
 
   private final Note note2= new NoteBuilder()
-      .id(2)
+      .id("2")
       .patientId(3)
       .noteContent("second note")
       .build();
 
   private final Note noteToUpdate= new NoteBuilder()
-      .id(1)
-      .patientId(10)
+      .id("1")
+      .patientId(4)
       .noteContent("note updated")
       .build();
 
@@ -65,37 +64,52 @@ public class NoteServiceTest {
     verify(repository,times(1)).findAll();
   }
 
+  /*@Test
+  void givenAPatientWithTwoNotesWhenGetAllNotesByPatientThenReturnListOfPatientNotes() {
+    //Given
+    Note note= new NoteBuilder()
+        .id("4")
+        .patientId(2)
+        .noteContent("second note of Doe")
+        .build();
+
+    //when(repository.findAllBy)
+
+    //When
+    //Then
+  }*/
+
   @Test
   void givenANoteExistingWhenGetNoteByIdThenReturnNote() {
     //Given
-    when(repository.findById(anyInt())).thenReturn(Optional.ofNullable(note1));
+    when(repository.findById(any())).thenReturn(Optional.ofNullable(note1));
 
     //When
-    Note actual= classUnderTest.getNoteById(1);
+    Note actual= classUnderTest.getNoteById("1");
 
     //Then
     noteAssertionVerification(actual);
-    verify(repository,times(1)).findById(1);
+    verify(repository,times(1)).findById("1");
   }
 
   @Test
   void givenANoteNoteExistingWhenGetNoteByIdThenReturnNull() {
     //Given
-    when(repository.findById(anyInt())).thenReturn(Optional.empty());
+    when(repository.findById(any())).thenReturn(Optional.empty());
 
     //When
-    Note actual= classUnderTest.getNoteById(1);
+    Note actual= classUnderTest.getNoteById("1");
 
     //Then
     assertNull(actual);
-    verify(repository,times(1)).findById(1);
+    verify(repository,times(1)).findById("1");
   }
 
   @Test
   void givenANewNoteWhenAddNoteThenNoteSaved() {
     //Given
     Note noteToSave= new NoteBuilder()
-        .patientId(1)
+        .patientId(2)
         .noteContent("new note")
         .build();
 
@@ -112,59 +126,59 @@ public class NoteServiceTest {
   @Test
   void givenANoteExistingWhenUpdateNoteThenNoteUpdated() {
     //Given
-    when(repository.existsById(anyInt())).thenReturn(true);
+    when(repository.existsById(any())).thenReturn(true);
     when(repository.save(any())).thenReturn(note1);
 
     //When
-    Note actual= classUnderTest.updateNote(1,noteToUpdate);
+    Note actual= classUnderTest.updateNote("1",noteToUpdate);
 
     //Then
     noteAssertionVerification(actual);
-    verify(repository, times(1)).existsById(1);
+    verify(repository, times(1)).existsById("1");
   }
 
   @Test
   void givenANoteNotExistingWhenUpdateNoteThenReturnNull(){
     //Given
-    when(repository.existsById(anyInt())).thenReturn(false);
+    when(repository.existsById(any())).thenReturn(false);
     when(repository.save(any())).thenReturn(note1);
 
     //When
-    Note actual= classUnderTest.updateNote(3, noteToUpdate);
+    Note actual= classUnderTest.updateNote("3", noteToUpdate);
 
     //Then
     assertNull(actual);
-    verify(repository,times(1)).existsById(3);
+    verify(repository,times(1)).existsById("3");
     verify(repository,times(0)).save(noteToUpdate);
   }
 
   @Test
   void givenANoteExistingWhenDeleteByIdNoteThenNoteDeletedAndReturnTrue() {
     //Given
-    when(repository.existsById(anyInt())).thenReturn(true);
+    when(repository.existsById(any())).thenReturn(true);
 
     //When
-    boolean actual= classUnderTest.deleteById(1);
+    boolean actual= classUnderTest.deleteById("1");
 
     //Then
     assertTrue(actual);
-    verify(repository, times(1)).deleteById(1);
+    verify(repository, times(1)).deleteById("1");
   }
 
   @Test
   void givenANoteNotExistingWhenDeleteByIdNoteThenReturnFalse() {
     //Given
-    when(repository.existsById(anyInt())).thenReturn(false);
+    when(repository.existsById(any())).thenReturn(false);
 
     //When
-    boolean actual= classUnderTest.deleteById(1);
+    boolean actual= classUnderTest.deleteById("1");
 
     //Then
     assertFalse(actual);
-    verify(repository, times(0)).deleteById(1);
+    verify(repository, times(0)).deleteById("1");
   }
   private void noteAssertionVerification(Note actual) {
-    assertThat(actual.getId()).isEqualTo(1);
+    assertThat(actual.getId()).isEqualTo("1");
     assertThat(actual.getPatientId()).isEqualTo(2);
     assertThat(actual.getNoteContent()).isEqualTo("new note");
   }
