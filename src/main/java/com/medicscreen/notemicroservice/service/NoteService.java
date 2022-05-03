@@ -55,4 +55,8 @@ public class NoteService {
     }
     return false;
   }
+
+  public void deleteAll() {
+    repository.deleteAll();
+  }
 }
