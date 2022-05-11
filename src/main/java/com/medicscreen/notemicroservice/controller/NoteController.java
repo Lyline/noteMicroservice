@@ -66,7 +66,7 @@ public class NoteController {
     boolean noteIsDeleted= service.deleteById(id);
 
     if (noteIsDeleted){
-      return new ResponseEntity<>(HttpStatus.OK);
-    }return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>(true,HttpStatus.OK);
+    }return new ResponseEntity<>(false,HttpStatus.OK);
   }
 }
