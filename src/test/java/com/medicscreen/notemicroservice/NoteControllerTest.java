@@ -217,6 +217,6 @@ public class NoteControllerTest {
 
     //When
     mockMvc.perform(delete("/noteAPI/notes/1"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isOk());
   }
 }

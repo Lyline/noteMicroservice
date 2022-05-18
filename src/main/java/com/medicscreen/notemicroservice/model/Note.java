@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-@Document
+@Document(collection = "notes")
 public class Note {
 
   @Id
