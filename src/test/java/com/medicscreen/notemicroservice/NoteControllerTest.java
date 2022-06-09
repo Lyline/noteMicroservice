@@ -46,7 +46,7 @@ public class NoteControllerTest {
   void DisplayWelcomeMessage() throws Exception {
     mockMvc.perform(get("/noteAPI"))
         .andExpect(status().isOk())
-        .andExpect(content().string("Welcome to Note API"));
+        .andExpect(content().string("Welcome to Mediscreen Note API"));
   }
 
   @Test

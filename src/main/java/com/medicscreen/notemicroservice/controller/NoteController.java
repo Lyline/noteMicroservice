@@ -22,7 +22,7 @@ public class NoteController {
 
   @GetMapping("")
   public ResponseEntity<String> getWelcome(){
-    return new ResponseEntity<>("Welcome to Note API", HttpStatus.OK);
+    return new ResponseEntity<>("Welcome to Mediscreen Note API", HttpStatus.OK);
   }
 
   @GetMapping("/patient_notes/{id}")
